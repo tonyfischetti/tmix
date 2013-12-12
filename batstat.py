@@ -20,9 +20,9 @@ elif 40 < percent <= 60:
 elif 20 < percent <= 40:
     outstring += '██░░░'
 else:
+    outstring += '█░░░░'
     if percent < 10:
         outstring += ' ⚠'
-    outstring += '█░░░░'
 
 
 
