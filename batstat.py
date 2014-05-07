@@ -5,7 +5,8 @@ import subprocess
 import re
 
 info = subprocess.check_output("pmset -g batt", shell=True)
-percent = int(re.search(b"(\d+)%", info).group(1))
+info = info.decode("utf-8")
+percent = int(re.search("(\d+)%", info).group(1))
 
 outstring = ""
 
@@ -26,7 +27,7 @@ else:
 
 
 
-if b"AC Power" in info:
+if "AC Power" in info:
     outstring += " ☍"
 
 
