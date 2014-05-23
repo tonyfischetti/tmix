@@ -1,0 +1,60 @@
+#!/bin/bash
+
+######################################################
+##                                                  ##
+## Rworkshop                                        ##
+##                                                  ##
+##     opens and configures a tmux session for      ##
+##     editing and running R scripts                ##
+##                                                  ##
+##                                                  ##
+##              Author: Tony Fischetti              ##
+##              email: tony.fischetti@gmail.com     ##
+##                                                  ##
+##                                                  ##
+######################################################
+
+# check if Rworkshop is already running
+tmux has-session -t Rworkshop
+if [ $? == 0 ]
+then
+    # if so, attach and exit
+    tmux attach -t Rworkshop
+    exit 0
+fi
+
+# get current working directory
+CWD=$(pwd)
+
+# set default editor
+EDITOR=vi
+
+# create new tmux session called "Rworkshop"
+# and immediately detach
+tmux new-session -s Rworkshop -n Rworkshop -d
+
+# open the main pane to directory from which
+# this script was called
+tmux send-keys -t Rworkshop "cd $CWD" C-m
+
+# if no path was given supplied as an argument
+# to this script...
+if [ -z "$1" ]
+then
+    # just clear the console of the pane
+    # (C-m means <Enter>)
+    tmux send-keys -t Rworkshop "clear" C-m
+else
+    # if we did get supplied an R script,
+    # open it!
+    tmux send-keys -t Rworkshop "$EDITOR $1" C-m
+fi
+
+# create another pane with the same working directory
+tmux split-window -h -t Rworkshop -c "#{pane_current_path}"
+
+# start R in that pane
+tmux send-keys -t Rworkshop "R --vanilla" C-m
+
+# attach to the running tmux session!
+tmux attach -t Rworkshop
