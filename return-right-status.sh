@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 unamestr=`uname`
 outstring=''
