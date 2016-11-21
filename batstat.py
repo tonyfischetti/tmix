@@ -1,21 +1,23 @@
-#!/usr/bin/env python -tt
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 import subprocess
 import re
 
 
+
 AC_POWER = False
 
 system = subprocess.check_output("uname", shell=True).decode("utf-8")
 if "Linux" in system:
-    com = "upower -i $(upower -e | grep 'BAT')"
+    com = "acpi"
     info = subprocess.check_output(com, shell=True)
     info = info.decode("utf-8")
-    percent = int(re.search("percentage:\s+(\d+)%", info).group(1))
+    percent = int(re.search(",\s+(\d+)%", info).group(1))
     # check for AC_POWER
-    if re.search("state:\s+charging", info):
-        AC_POWER = True
+    AC_POWER = True
+    if re.search("Discharging", info):
+        AC_POWER = False
 else:
     # mac
     info = subprocess.check_output("pmset -g batt", shell=True)
