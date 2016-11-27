@@ -7,7 +7,9 @@ if [ "$unamestr" == 'Darwin' ]; then
     bat=`python ~/.tmux/batstat.py`
     outstring="$itunes | $bat"
 elif [ "$unamestr" == 'Linux' ]; then
-    outstring=`python ~/.tmux/batstat.py`
+    tunes=`~/.tmux/ltunes.pl`
+    bat=`python ~/.tmux/batstat.py`
+    outstring="$tunes | $bat"
 fi
 
 echo $outstring
