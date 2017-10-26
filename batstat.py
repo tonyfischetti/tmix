@@ -33,13 +33,13 @@ if 80 < percent <= 100:
     if percent == 100:
         outstring += ' ☼'
 elif 60 < percent <= 80:
-    outstring += '████░'
+    outstring += '████_'
 elif 40 < percent <= 60:
-    outstring += '███░░'
+    outstring += '███__'
 elif 20 < percent <= 40:
-    outstring += '██░░░'
+    outstring += '██___'
 else:
-    outstring += '█░░░░'
+    outstring += '█____'
     if percent < 10:
         outstring += ' ⚠'
 
