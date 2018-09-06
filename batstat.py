@@ -22,31 +22,37 @@ else:
     # mac
     info = subprocess.check_output("pmset -g batt", shell=True)
     info = info.decode("utf-8")
-    percent = int(re.search("(\d+)%", info).group(1))
+    try:
+        percent = int(re.search("(\d+)%", info).group(1))
+    except:
+        percent = None
     if "AC Power" in info:
         AC_POWER = True
 
 outstring = ""
 
-if 80 < percent <= 100:
-    outstring += '█████'
-    if percent == 100:
-        outstring += ' ☼'
-elif 60 < percent <= 80:
-    outstring += '████_'
-elif 40 < percent <= 60:
-    outstring += '███__'
-elif 20 < percent <= 40:
-    outstring += '██___'
+if percent:
+    if 80 < percent <= 100:
+        outstring += '█████'
+        if percent == 100:
+            outstring += ' ☼'
+    elif 60 < percent <= 80:
+        outstring += '████_'
+    elif 40 < percent <= 60:
+        outstring += '███__'
+    elif 20 < percent <= 40:
+        outstring += '██___'
+    else:
+        outstring += '█____'
+        if percent < 10:
+            outstring += ' ⚠'
 else:
-    outstring += '█____'
-    if percent < 10:
-        outstring += ' ⚠'
+    outstring += ""
 
 
 
 if AC_POWER:
-    outstring += " ☍"
+    outstring += "  "
 
 
 print(outstring)

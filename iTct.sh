@@ -9,6 +9,7 @@ ITUNES_TRACK=$(osascript <<EOF
         tell app "System Events" to (name of processes) contains appName
     end appIsRunning
 EOF)
+
  
 if test "x$ITUNES_TRACK" != "x"; then
     ITUNES_ARTIST=$(osascript <<EOF
@@ -24,6 +25,7 @@ EOF)
     echo '♫ ' $ITUNES_TRACK '#[nobold]-#[bold]' $ITUNES_ARTIST
     exit 0
 fi
+
 
 
 # maybe spotify
