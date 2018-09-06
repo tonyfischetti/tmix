@@ -52,7 +52,7 @@ else:
 
 
 if AC_POWER:
-    outstring += "  "
+    outstring += "   "
 
 
 print(outstring)
