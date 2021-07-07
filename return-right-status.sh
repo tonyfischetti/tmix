@@ -1,7 +1,5 @@
 #!/bin/bash
 
-## !/usr/bin/env bash
-
 unamestr=`uname`
 outstring=''
 if [ "$unamestr" == 'Darwin' ]; then
@@ -10,7 +8,7 @@ if [ "$unamestr" == 'Darwin' ]; then
     outstring="$itunes | $bat"
 elif [ "$unamestr" == 'Linux' ]; then
     tunes=`~/.tmux/ltunes.pl`
-    bat=`python ~/.tmux/batstat.py`
+    bat=`python3 ~/.tmux/batstat.py`
     outstring="$tunes | $bat"
 fi
 
