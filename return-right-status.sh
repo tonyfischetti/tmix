@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #  TODO: this needs work
-# for example, trim the song name if too long
 
 unamestr=`uname`
 outstring=''

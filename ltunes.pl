@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+$titlelengthcutoff = 40;
 
 sub cmus_info {
     $outstring = "♫  ";
@@ -20,7 +21,9 @@ sub spotify_info {
         print "";
         return;
     }
-    $outstring .= `timeout 1 playerctl metadata title`;
+    $tmp = `timeout 1 playerctl metadata title`;
+    #  TODO: untested on gnu/linux
+    $outstring .= ( length($tmp) > $titlelengthcutoff : substr($tmp, 0, $titlelengthcutoff-3) . "..." : $tmp )
     $outstring .= " #[nobold]-#[bold] ";
     $outstring .= `timeout 1 playerctl metadata artist`;
     print $outstring;

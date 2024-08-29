@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+TITLECUTOFF=40
+
 ITUNES_TRACK=$(osascript <<EOF
     if appIsRunning("iTunes") then
         tell app "iTunes" to get the name of the current track
@@ -49,6 +51,10 @@ if test "x$SPOTIFY_TRACK" != "x"; then
             tell app "System Events" to (name of processes) contains appName
         end appIsRunning
 EOF)
+
+    if [ ${#SPOTIFY_TRACK} -ge $TITLECUTOFF ]; then
+        SPOTIFY_TRACK="${SPOTIFY_TRACK:0:$TITLECUTOFF-3}..."
+    fi
      
     echo '♫ ' $SPOTIFY_TRACK '#[nobold]-#[bold]' $SPOTIFY_ARTIST
     exit 0
