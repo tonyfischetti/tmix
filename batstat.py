@@ -13,7 +13,7 @@ if "Linux" in system:
     com = "acpi"
     info = subprocess.check_output(com, shell=True)
     info = info.decode("utf-8")
-    percent = int(re.search(",\s+(\d+)%", info).group(1))
+    percent = int(re.search(r",\s+(\d+)%", info).group(1))
     # check for AC_POWER
     AC_POWER = True
     if re.search("Discharging", info):
@@ -23,7 +23,7 @@ else:
     info = subprocess.check_output("pmset -g batt", shell=True)
     info = info.decode("utf-8")
     try:
-        percent = int(re.search("(\d+)%", info).group(1))
+        percent = int(re.search(r"(\d+)%", info).group(1))
     except:
         percent = None
     if "AC Power" in info:
