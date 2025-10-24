@@ -2,60 +2,61 @@
 
 TITLECUTOFF=40
 
-ITUNES_TRACK=$(osascript <<EOF
-    if appIsRunning("iTunes") then
-        tell app "iTunes" to get the name of the current track
-    end if
-     
-    on appIsRunning(appName)
-        tell app "System Events" to (name of processes) contains appName
-    end appIsRunning
-EOF)
+ITUNES_TRACK=$(osascript 2>/dev/null <<EOF
+on appIsRunning(appName)
+    tell application "System Events" to (name of processes) contains appName
+end appIsRunning
 
- 
-if test "x$ITUNES_TRACK" != "x"; then
-    ITUNES_ARTIST=$(osascript <<EOF
-        if appIsRunning("iTunes") then
-            tell app "iTunes" to get the artist of the current track
-        end if
-         
-        on appIsRunning(appName)
-            tell app "System Events" to (name of processes) contains appName
-        end appIsRunning
-EOF)
-     
-    echo '♫ ' $ITUNES_TRACK '#[nobold]-#[bold]' $ITUNES_ARTIST
+if appIsRunning("Music") then
+    tell application "Music" to get the name of the current track
+end if
+EOF
+)
+
+if [ -n "$ITUNES_TRACK" ]; then
+    ITUNES_ARTIST=$(osascript 2>/dev/null <<EOF
+on appIsRunning(appName)
+    tell application "System Events" to (name of processes) contains appName
+end appIsRunning
+
+if appIsRunning("Music") then
+    tell application "Music" to get the artist of the current track
+end if
+EOF
+)
+
+    echo "♫ $ITUNES_TRACK #[nobold]-#[bold] $ITUNES_ARTIST"
     exit 0
 fi
 
+# Try Spotify
+SPOTIFY_TRACK=$(osascript 2>/dev/null <<EOF
+on appIsRunning(appName)
+    tell application "System Events" to (name of processes) contains appName
+end appIsRunning
 
+if appIsRunning("Spotify") then
+    tell application "Spotify" to get the name of the current track
+end if
+EOF
+)
 
-# maybe spotify
-SPOTIFY_TRACK=$(osascript <<EOF
-    if appIsRunning("Spotify") then
-        tell app "Spotify" to get the name of the current track as string
-    end if
-     
-    on appIsRunning(appName)
-        tell app "System Events" to (name of processes) contains appName
-    end appIsRunning
-EOF)
+if [ -n "$SPOTIFY_TRACK" ]; then
+    SPOTIFY_ARTIST=$(osascript 2>/dev/null <<EOF
+on appIsRunning(appName)
+    tell application "System Events" to (name of processes) contains appName
+end appIsRunning
 
-if test "x$SPOTIFY_TRACK" != "x"; then
-    SPOTIFY_ARTIST=$(osascript <<EOF
-        if appIsRunning("Spotify") then
-            tell app "Spotify" to get the artist of the current track as string
-        end if
-         
-        on appIsRunning(appName)
-            tell app "System Events" to (name of processes) contains appName
-        end appIsRunning
-EOF)
+if appIsRunning("Spotify") then
+    tell application "Spotify" to get the artist of the current track
+end if
+EOF
+)
 
     if [ ${#SPOTIFY_TRACK} -ge $TITLECUTOFF ]; then
-        SPOTIFY_TRACK="${SPOTIFY_TRACK:0:$TITLECUTOFF-3}..."
+        SPOTIFY_TRACK="${SPOTIFY_TRACK:0:$((TITLECUTOFF-3))}..."
     fi
-     
-    echo '♫ ' $SPOTIFY_TRACK '#[nobold]-#[bold]' $SPOTIFY_ARTIST
+
+    echo "♫ $SPOTIFY_TRACK #[nobold]-#[bold] $SPOTIFY_ARTIST"
     exit 0
 fi
